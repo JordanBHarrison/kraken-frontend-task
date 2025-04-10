@@ -18,7 +18,7 @@ const HeroSection = () => {
           '
         >
           <CompactButton>-</CompactButton>
-          <span className='text-3xl'>1</span>
+          <span className='text-3xl' title='Current quantity'>1</span>
           <CompactButton>+</CompactButton>
         </div>
       </div>

@@ -17,7 +17,7 @@ export default function Product() {
           weight: 100,
           dimensions: '10 x 10 x 10',
           modelNumber: 'test',
-          colour: 'white'
+          colour: 'white',
         }}
       />
     </div>

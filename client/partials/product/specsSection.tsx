@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 
 type ProductSpecs = {
   brand: string;
@@ -24,13 +25,16 @@ const SpecificationsSection = ({ productSpecs }: ProductSpecificationsSectionPro
   return (
     <section className='px-4 py-6'>
       <h2 className='text-2xl font-medium mb-6'>Specifications</h2>
-      <div className='grid grid-cols-2 gap-4 font-light'>
-        {Object.keys(productSpecs).map((key) => (
-          <>
-            <p key={`label-${key}`}>{productSpecLabels[key]}</p>
-            <p key={`${key}`}>{productSpecs[key]}</p>
-          </>
-        ))}
+      <div className='grid grid-cols-2 gap-x-4 gap-y-6 font-light'>
+        {Object.entries(productSpecs)
+          .filter(([key, _]) => key in productSpecLabels) // Filter out any keys not in productSpecLabels
+          .map(([key, value]) => (
+            <Fragment key={key}>
+              <p>{productSpecLabels[key]}</p>
+              <p>{value}</p>
+            </Fragment>
+          ))
+        }
       </div>
 
     </section>

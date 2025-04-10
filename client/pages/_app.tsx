@@ -1,12 +1,15 @@
 import type { AppProps } from 'next/app'
 import Layout from '../components/layout';
+import { BasketProvider } from '../context/basket-context';
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <BasketProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </BasketProvider>
   )
 }
 
