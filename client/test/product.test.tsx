@@ -21,27 +21,27 @@ const testProduct = {
 }
 
 test("should be able to increase and decrease product quantity", async () => {
-  const { getByText, getByTitle } = render(<Product product={testProduct}/>);
+  const { getAllByTitle, getAllByText } = render(<Product product={testProduct}/>);
 
-  const increaseQuantity = getByText("+");
+  const increaseQuantity = getAllByText("+");
 
-  const currentQuantity = getByTitle("Current quantity");
-  expect(currentQuantity).toHaveTextContent("1");
+  const currentQuantity = getAllByTitle("Current quantity");
+  expect(currentQuantity[0]).toHaveTextContent("1");
 
-  fireEvent.click(increaseQuantity);
-  expect(currentQuantity).toHaveTextContent("2");
+  fireEvent.click(increaseQuantity[0]);
+  expect(currentQuantity[0]).toHaveTextContent("2");
 
-  const decreaseQuantity = getByText("-");
+  const decreaseQuantity = getAllByText("-");
 
-  fireEvent.click(decreaseQuantity);
-  expect(currentQuantity).toHaveTextContent("1");
+  fireEvent.click(decreaseQuantity[0]);
+  expect(currentQuantity[0]).toHaveTextContent("1");
 });
 
 test("should be able to add items to the basket", async () => {
   const mockAddToBasket = jest.fn(); // Mock the addToBasket function
   const mockBasket = []; // Mock the initial basket state
 
-  const { getByText, getByTitle } = render(
+  const { getAllByText, getAllByTitle } = render(
     <BasketContext.Provider value={{ basket: mockBasket, addToBasket: mockAddToBasket }}>
       <Layout>
         <Product product={testProduct} />
@@ -49,19 +49,19 @@ test("should be able to add items to the basket", async () => {
     </BasketContext.Provider>
   );
 
-  const increaseQuantity = getByText("+");
-  const currentQuantity = getByTitle("Current quantity");
+  const increaseQuantity = getAllByText("+");
+  const currentQuantity = getAllByTitle("Current quantity");
 
   // Increase the quantity to 4
-  fireEvent.click(increaseQuantity);
-  fireEvent.click(increaseQuantity);
-  fireEvent.click(increaseQuantity);
+  fireEvent.click(increaseQuantity[0]);
+  fireEvent.click(increaseQuantity[0]);
+  fireEvent.click(increaseQuantity[0]);
 
-  expect(currentQuantity).toHaveTextContent("4");
+  expect(currentQuantity[0]).toHaveTextContent("4");
 
   // Add to basket
-  const addToBasketElement = getByText("Add to cart");
-  fireEvent.click(addToBasketElement);
+  const addToBasketElement = getAllByText("Add to cart");
+  fireEvent.click(addToBasketElement[0]);
 
   // Assert that the mockAddToBasket function was called with the correct arguments
   expect(mockAddToBasket).toHaveBeenCalledWith({ id: "1", quantity: 4 });
