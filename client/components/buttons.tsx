@@ -17,7 +17,7 @@ export const PrimaryButton = ({ children, ...props } : ButtonProps) => {
 export const CompactButton = ({ children, disabled, ...props } : ButtonProps) => {
   return (
     <button
-      className={`w-8 aspect-square bg-soholights text-siphon rounded-xl ${disabled ? 'opacity-50 text-ice' : ''}`}
+      className={`w-8 aspect-square bg-soholights text-siphon rounded-xl ${disabled ? 'bg-plum text-ice' : ''}`}
       {...props}
     >
       {children}

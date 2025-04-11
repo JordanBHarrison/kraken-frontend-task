@@ -4,16 +4,19 @@ import { useState } from "react";
 import Image from "next/image";
 import { CompactButton, PrimaryButton } from "../../components/buttons";
 import { formatPrice } from "../../utils/helpers";
+import useBasket from "../../hook/useBasket";
 
 type HeroSectionProps = {
+  productId: string;
   imageUrl: string;
   name: string;
   subheading: string;
   price: number;
 }
 
-const HeroSection = ({ imageUrl, name, subheading, price } : HeroSectionProps) => {
+const HeroSection = ({ productId, imageUrl, name, subheading, price } : HeroSectionProps) => {
   const [quantity, setQuantity] = useState(1);
+  const { addToBasket } = useBasket();
 
   const handleIncrement = () => setQuantity((prev) => prev + 1);
 
@@ -50,7 +53,7 @@ const HeroSection = ({ imageUrl, name, subheading, price } : HeroSectionProps) =
           </div>
         </div>
         <div className='w-full max-w-[400px] mx-auto'>
-          <PrimaryButton>Add to cart</PrimaryButton>
+          <PrimaryButton onClick={() => addToBasket({ id: productId, quantity })}>Add to cart</PrimaryButton>
         </div>
       </div>
     </section>

@@ -24,19 +24,20 @@ const productSpecLabels:ProductSpecLabels = {
 const SpecificationsSection = ({ productSpecs }: ProductSpecificationsSectionProps) => {
   return (
     <section className='px-4 py-6'>
-      <h2 className='text-2xl font-medium mb-6'>Specifications</h2>
-      <div className='grid grid-cols-2 gap-x-4 gap-y-6 font-light'>
-        {Object.entries(productSpecs)
-          .filter(([key, _]) => key in productSpecLabels) // Filter out any keys not in productSpecLabels
-          .map(([key, value]) => (
-            <Fragment key={key}>
-              <p>{productSpecLabels[key]}</p>
-              <p>{value}</p>
-            </Fragment>
-          ))
-        }
+      <div className='max-w-screen-md mx-auto'>
+        <h2 className='text-2xl font-medium mb-6'>Specifications</h2>
+        <div className='grid grid-cols-2 gap-x-4 gap-y-6 font-light'>
+          {Object.entries(productSpecs)
+            .filter(([key, _]) => key in productSpecLabels) // Filter out any keys not in productSpecLabels
+            .map(([key, value]) => (
+              <Fragment key={key}>
+                <p>{productSpecLabels[key]}</p>
+                <p>{value}</p>
+              </Fragment>
+            ))
+          }
+        </div>
       </div>
-
     </section>
   )
 }

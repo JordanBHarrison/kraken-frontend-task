@@ -1,6 +1,8 @@
 "use client"
 
 import { createContext, useEffect, useState, ReactNode } from 'react';
+import { getProductById, Product } from '../services/productService';
+
 type NewBasketItem = {
   id: string;
   quantity: number;
@@ -11,20 +13,6 @@ type BasketItem = {
   quantity: number;
   name: string;
   price: number;
-  img: string;
-}
-
-type Product = {
-  id: number,
-  name: string,
-  power: string,
-  description: string,
-  price: number,
-  quantity: number,
-  brand: string,
-  weight: number,
-  height: number,
-  width: number,
 }
 
 interface BasketContextType {
@@ -40,27 +28,25 @@ export const BasketContext = createContext<BasketContextType>({
 export const BasketProvider = ({ children }: { children: ReactNode }) => {
   const [basket, setBasket] = useState<BasketItem[]>([]);
 
-  const addToBasket = (newBasketItem: NewBasketItem) => {
-    setBasket((prev) => {
-      const existingItemIndex = prev.findIndex((item) => item.id === newBasketItem.id);
-      if (existingItemIndex !== -1) {
-        return prev.map((item, index) =>
-          index === existingItemIndex ? { ...item, quantity: item.quantity + newBasketItem.quantity } : item
-        );
-      }
+  const addToBasket = async (newBasketItem: NewBasketItem) => {
+    const existingItemIndex = basket.findIndex((item) => item.id === newBasketItem.id);
 
-      // If the item doesn't exist in the basket, add it
-      // Fetch product data from the server
-      // and add it to the basket with the required properties
-    });
-  };
-
-  const fetchBasketItemsMetadata = async () => {
-    // For each item in the basket, fetch the product data from the server
-
-    // if data found add it to the library state object
-
-    // if not found remove it from the basket state array
+    // Check if the item already exists in the basket
+    if (existingItemIndex !== -1) {
+      setBasket((prev) => prev.map((item, index) =>
+        index === existingItemIndex ? { ...item, quantity: item.quantity + newBasketItem.quantity } : item
+      ));
+    } else {
+      // Fetch product metadata from the server
+      const productData = await getProductById(newBasketItem.id)
+      const newItem: BasketItem = {
+        id: productData.id,
+        quantity: newBasketItem.quantity,
+        name: productData.name,
+        price: productData.price,
+      };
+      setBasket(prev => [...prev, newItem]);
+    }
   };
 
   const saveBasketToLocalStorage = () => {
@@ -72,11 +58,28 @@ export const BasketProvider = ({ children }: { children: ReactNode }) => {
   }
 
   useEffect(() => {
-    const storedBasket = localStorage.getItem('basket');
-    if (storedBasket) {
-      const parsedBasket = JSON.parse(storedBasket);
-      setBasket(parsedBasket);
-    }
+    const fetchStoredBasket = async () => {
+      const storedBasket = localStorage.getItem("basket");
+      if (storedBasket) {
+        const parsedBasket: NewBasketItem[] = JSON.parse(storedBasket);
+
+        // Fetch product details for each item in the stored basket
+        const basketItems: BasketItem[] = await Promise.all(
+          parsedBasket.map(async (item) => {
+            const productData = await getProductById(item.id);
+            return {
+              id: productData.id,
+              quantity: item.quantity,
+              name: productData.name,
+              price: productData.price,
+            };
+          })
+        );
+
+        setBasket(basketItems);
+      }
+    };
+    fetchStoredBasket();
   }, []);
 
   useEffect(() => {

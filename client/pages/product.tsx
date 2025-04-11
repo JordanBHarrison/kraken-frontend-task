@@ -18,14 +18,17 @@ export default function ProductPage({ product }: { product: Product }) {
   return (
     <div>
       <HeroSection 
+        productId={product.id}
         imageUrl={product.img_url}
         name={product.name}
         subheading={heroSectionSubheading}
         price={product.price}  
       />
       <section className='px-4 py-6 bg-hemocyanin'>
-        <h2 className='text-2xl font-medium mb-6'>Description</h2>
-        <p className='text-base font-light'>{product.description}</p>
+        <div className='max-w-screen-md mx-auto'>
+          <h2 className='text-2xl font-medium mb-6'>Description</h2>
+          <p className='text-base font-light'>{product.description}</p>
+        </div>
       </section>
       <SpecsSection
         productSpecs={{
