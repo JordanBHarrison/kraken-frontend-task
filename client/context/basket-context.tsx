@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import { getProductById, Product } from '../services/productService';
+import { getProductById } from '../services/productService';
 
 type NewBasketItem = {
   id: string;

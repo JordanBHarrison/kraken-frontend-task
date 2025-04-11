@@ -1,12 +1,13 @@
+import { ReactNode, ButtonHTMLAttributes } from 'react';
 
 type ButtonProps = {
-  children: React.ReactNode;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+  children: ReactNode;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const PrimaryButton = ({ children, ...props } : ButtonProps) => {
+export const PrimaryButton = ({ children, className, ...props } : ButtonProps) => {
   return (
     <button
-      className="w-full bg-soholights text-siphon py-4 px-6 rounded-xl"
+      className={`w-full bg-soholights text-siphon py-4 px-6 rounded-xl ${className || ''}`}
       {...props}
     >
       {children}
@@ -14,10 +15,10 @@ export const PrimaryButton = ({ children, ...props } : ButtonProps) => {
   );
 }
 
-export const CompactButton = ({ children, disabled, ...props } : ButtonProps) => {
+export const CompactButton = ({ children, className, disabled, ...props } : ButtonProps) => {
   return (
     <button
-      className={`w-8 aspect-square bg-soholights text-siphon rounded-xl ${disabled ? 'bg-plum text-ice' : ''}`}
+      className={`w-8 aspect-square bg-soholights text-siphon rounded-xl ${className || ''} ${disabled ? 'bg-plum text-ice' : ''}`}
       {...props}
     >
       {children}
