@@ -9,6 +9,7 @@ import { formatPrice } from "../utils/helpers";
 const Header = () => {
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const { basket } = useBasket();
+  const basketItemCount = basket.reduce((acc, item) => acc + item.quantity, 0);
 
   const toggleBasket = () => {
     setIsBasketOpen((prev) => !prev);
@@ -24,6 +25,11 @@ const Header = () => {
         />
       </div>
       <div className='relative'>
+        {basketItemCount > 0 && (
+          <div className='absolute flex items-center justify-center -top-2 -left-2 rounded-full bg-white text-siphon text-xs w-4 h-4'>
+            <span title='Basket items'>{basketItemCount}</span>
+          </div>
+        )}
         <Image
           src='/basket.svg'
           className='aspect-square w-8'
@@ -44,12 +50,12 @@ const Header = () => {
               <ul className='w-full'>
                 {basket.map((item) => (
                   <li key={item.id} className='flex justify-between gap-2'>
-                    <span className='whitespace-nowrap text-ellipsis'>{item.name}</span>
-                    <span>{formatPrice(item.price)}</span>
+                    <span className='whitespace-nowrap text-ellipsis overflow-hidden'>{item.name}</span>
+                    <span>{formatPrice(item.price * item.quantity)}</span>
                   </li>
                 ))}
               </ul>
-              <button className='mt-4 w-full bg-purple-600 text-white py-2 rounded-lg'>
+              <button className='mt-4 w-full bg-soholights text-white py-2 rounded-lg'>
                 Checkout
               </button>
             </div>

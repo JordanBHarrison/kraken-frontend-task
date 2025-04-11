@@ -1,3 +1,9 @@
+type getProductByIdResponse = {
+  data: {
+    Product: Product;
+  };
+  errors?: any;
+}
 
 export type Product = {
   id: string;
@@ -46,7 +52,7 @@ export const getProductById = async (id: string): Promise<Product> => {
       }),
     });
 
-    const { data, errors } = await res.json();
+    const { data, errors } : getProductByIdResponse = await res.json();
 
     if (errors) throw new Error("Error fetching product with ID: " + id);
 
